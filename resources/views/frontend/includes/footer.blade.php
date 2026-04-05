@@ -16,22 +16,22 @@
 							</h4>
 							<ul class="footer__list">
 								<li class="footer__list-item">
-									<a href="privacy-policy.html" class="footer__list-item-link">
+									<a href="{{url('/privacy-policy')}}" class="footer__list-item-link">
 										Privacy Policy
 									</a>
 								</li>
 								<li class="footer__list-item">
-									<a href="#" class="footer__list-item-link">
+									<a href="{{url('/terms-conditions')}}" class="footer__list-item-link">
 										Terms & Conditions
 									</a>
 								</li>
 								<li class="footer__list-item">
-									<a href="#" class="footer__list-item-link">
+									<a href="{{url('/refund-policy')}}" class="footer__list-item-link">
 										Refund Policy
 									</a>
 								</li>
 								<li class="footer__list-item">
-									<a href="#" class="footer__list-item-link">
+									<a href="{{url('/payment-policy')}}" class="footer__list-item-link">
 										Payment Policy
 									</a>
 								</li>
@@ -78,16 +78,16 @@
 							</h4>
 							<ul class="footer__list">
 								<li class="footer__list-item">
-									<a href="#" class="footer__list-item-link">
+									<a href="{{url('/aboutus')}}" class="footer__list-item-link">
 										About Us
 									</a>
 								</li>
 								<li class="footer__list-item">
-									<a href="#" class="footer__list-item-link">
+									<a href="{{url('/contactus')}}" class="footer__list-item-link">
 										Contact Us
 									</a>
 								</li>
-								<li class="footer__list-item">
+								{{-- <li class="footer__list-item">
 									<a href="#" class="footer__list-item-link">
 										Blog
 									</a>
@@ -96,7 +96,7 @@
 									<a href="#" class="footer__list-item-link">
 										Careers
 									</a>
-								</li>
+								</li> --}}
 							</ul>
 						</div>
 					</div>
