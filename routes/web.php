@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Frontend\FrontendController;
@@ -40,6 +41,10 @@ Auth::routes(['login' => false, 'register' => false]);
 Route::middleware(['role:admin'])->group(function(){
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
     Route::get('/admin/logout', [AdminController::class, 'adminLogout']);
+
+    //Category Routes...
+    Route::get('/manage/category-create', [CategoryController::class, 'create']);
+    Route::post('/manage/category-store', [CategoryController::class, 'store']);
 });
 
 
