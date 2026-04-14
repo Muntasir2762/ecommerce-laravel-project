@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\Frontend\FrontendController;
@@ -45,6 +46,18 @@ Route::middleware(['role:admin'])->group(function(){
     //Category Routes...
     Route::get('/manage/category-create', [CategoryController::class, 'create']);
     Route::post('/manage/category-store', [CategoryController::class, 'store']);
+    Route::get('/manage/category-list', [CategoryController::class, 'list']);
+    Route::get('/manage/category-edit/{id}', [CategoryController::class, 'edit']);
+    Route::post('/manage/category-update/{id}', [CategoryController::class, 'update']);
+    Route::get('/manage/category-delete/{id}', [CategoryController::class, 'delete']);
+
+    //SubCategory Routes...
+    Route::get('/manage/subcategory-create', [SubCategoryController::class, 'create']);
+    Route::post('/manage/subcategory-store', [SubCategoryController::class, 'store']);
+    Route::get('/manage/subcategory-list', [SubCategoryController::class, 'list']);
+    Route::get('/manage/subcategory-edit/{id}', [SubCategoryController::class, 'edit']);
+    Route::post('/manage/subcategory-update/{id}', [SubCategoryController::class, 'update']);
+    Route::get('/manage/subcategory-delete/{id}', [SubCategoryController::class, 'delete']);
 });
 
 
