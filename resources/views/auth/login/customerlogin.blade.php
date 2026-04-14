@@ -350,10 +350,11 @@
                 <div>
                     <input type="password" placeholder="Password" id="password" name="password" required />
                 </div>
-                <div>
-                    <label class="checkbox">
-                        <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
-                    </label>
+
+                 <!-- Create Account + Home Links -->
+                <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+                    <a href="{{ url('/customer/registration') }}">Create New Account</a>
+                    <a href="{{ url('/') }}">Home</a>
                 </div>
                 <div>
                     <input type="submit" value="Log in" />

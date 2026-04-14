@@ -36,6 +36,8 @@ Route::post('/employee/login/auth', [LoginController::class, 'employeeLoginAuth'
 
 Route::get('/customer/login', [LoginController::class, 'customerLogin']);
 Route::post('/customer/login/auth', [LoginController::class, 'customerLoginAuth']);
+Route::get('/customer/registration', [LoginController::class, 'customerRegistration']);
+Route::post('/customer/registration-store', [LoginController::class, 'customerRegistrationStore']);
 
 Auth::routes(['login' => false, 'register' => false]);
 
