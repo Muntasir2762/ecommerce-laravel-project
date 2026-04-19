@@ -70,3 +70,10 @@
       integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
       crossorigin="anonymous"
     />
+
+      <!-- include libraries(jQuery, bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>

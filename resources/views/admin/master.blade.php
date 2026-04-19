@@ -24,6 +24,8 @@
     <!--end::App Wrapper-->
     <!--begin::Script-->
     @include('admin.includes.script')
+
+    @stack('script')
   </body>
   <!--end::Body-->
 </html>

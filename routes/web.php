@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Employee\EmployeeController;
@@ -60,6 +61,14 @@ Route::middleware(['role:admin'])->group(function(){
     Route::get('/manage/subcategory-edit/{id}', [SubCategoryController::class, 'edit']);
     Route::post('/manage/subcategory-update/{id}', [SubCategoryController::class, 'update']);
     Route::get('/manage/subcategory-delete/{id}', [SubCategoryController::class, 'delete']);
+
+    //SubCategory Routes...
+    Route::get('/manage/product-create', [ProductController::class, 'create']);
+    Route::post('/manage/product-store', [ProductController::class, 'store']);
+    Route::get('/manage/product-list', [ProductController::class, 'list']);
+    Route::get('/manage/product-edit/{id}', [ProductController::class, 'edit']);
+    Route::post('/manage/product-update/{id}', [ProductController::class, 'update']);
+    Route::get('/manage/product-delete/{id}', [ProductController::class, 'delete']);
 });
 
 

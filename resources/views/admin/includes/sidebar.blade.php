@@ -77,6 +77,31 @@
                   </li>
                 </ul>
               </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-speedometer"></i>
+                  <p>
+                    Product
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{url('/manage/product-list')}}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>List</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url('/manage/product-create')}}" class="nav-link">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Add New</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
               <li class="nav-item">
                 <a href="{{url('/admin/logout')}}" class="nav-link">
                   <i class="nav-icon bi bi-palette"></i>
