@@ -98,7 +98,7 @@
                                         <div class="col-md-6 col-sm-12 col-12">
                                             <div class="mb-3" id="color_fields">
                                                 <label for="color_name" class="form-label">Color (Optional)</label>
-                                                <input type="text" class="form-control mb-2" name="color_name[]" placeholder="Color Name" id="color_name" value="{{old('color_name')}}"/>
+                                                <input type="text" class="form-control mb-2" name="color_name[]" placeholder="Color Name" id="color_name"/>
                                                 <button type="button" class="btn btn-primary mt-2" id="add_color">Add More</button>
 
                                             </div>
@@ -107,7 +107,7 @@
                                         <div class="col-md-6 col-sm-12 col-12">
                                             <div class="mb-3" id="size_fields">
                                                 <label for="size_name" class="form-label">Size (Optional)</label>
-                                                <input type="text" class="form-control mb-2" name="size_name[]" placeholder="Size Name" id="size_name" value="{{old('size_name')}}"/>
+                                                <input type="text" class="form-control mb-2" name="size_name[]" placeholder="Size Name" id="size_name"/>
                                                 <button type="button" class="btn btn-primary mt-2" id="add_size">Add More</button>
 
                                             </div>
@@ -206,7 +206,7 @@
                                                     id="gallery_image" accept="image/*" multiple/>
                                                 <label class="input-group-text" for="gallery_image">Gallery Image</label>
                                             </div>
-                                            @error('image')
+                                            @error('gallery_image')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>
@@ -250,7 +250,7 @@
     <script>
         $(document).ready(function(){
             $("#add_color").click(function(){
-                $(this).before('<input type="text" class="form-control mb-2" name="color_name[]" placeholder="Color Name" id="color_name" value="{{old('color_name')}}"/>')
+                $(this).before('<input type="text" class="form-control mb-2" name="color_name[]" placeholder="Color Name" id="color_name"/>')
             })
         });
     </script>
@@ -259,7 +259,7 @@
     <script>
         $(document).ready(function(){
             $("#add_size").click(function(){
-                $(this).before('<input type="text" class="form-control mb-2" name="size_name[]" placeholder="Size Name" id="size_name" value="{{old('size_name')}}"/>')
+                $(this).before('<input type="text" class="form-control mb-2" name="size_name[]" placeholder="Size Name" id="size_name"/>')
             })
         });
     </script>

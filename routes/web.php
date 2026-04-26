@@ -62,13 +62,14 @@ Route::middleware(['role:admin'])->group(function(){
     Route::post('/manage/subcategory-update/{id}', [SubCategoryController::class, 'update']);
     Route::get('/manage/subcategory-delete/{id}', [SubCategoryController::class, 'delete']);
 
-    //SubCategory Routes...
+    //Product Routes...
     Route::get('/manage/product-create', [ProductController::class, 'create']);
     Route::post('/manage/product-store', [ProductController::class, 'store']);
     Route::get('/manage/product-list', [ProductController::class, 'list']);
     Route::get('/manage/product-edit/{id}', [ProductController::class, 'edit']);
     Route::post('/manage/product-update/{id}', [ProductController::class, 'update']);
     Route::get('/manage/product-delete/{id}', [ProductController::class, 'delete']);
+    Route::get('/manage/product-status/{id}', [ProductController::class, 'changeStatus']);
 });
 
 

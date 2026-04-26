@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Color;
+use App\Models\GalleryImage;
 use App\Models\Product;
+use App\Models\Size;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,7 +34,8 @@ class ProductController extends Controller
             'qty' => 'required|integer',
             'product_type' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'required|image|max:2048'
+            'image' => 'required|image|max:2048',
+            'gallery_image' => 'required|max:2048'
         ],[
             'name.required' => 'প্রোডাক্ট এর নাম জরুরি',
             'name.max' => 'প্রোডাক্ট এর নাম সর্বোচ্চ 255 ক্যারেক্টর!',
@@ -63,7 +67,68 @@ class ProductController extends Controller
 
         $product->save();
 
+        //Add Colors...
+        if(isset($request->color_name) && $request->color_name[0] != null){
+            foreach($request->color_name as $singleColor){
+                $color = new Color();
+
+                $color->product_id = $product->id;
+                $color->color_name = $singleColor;
+
+                $color->save();
+            }
+        }
+
+        //Add Sizes...
+        if(isset($request->size_name) && $request->size_name[0] != null){
+            foreach($request->size_name as $singleSize){
+                $size = new Size();
+
+                $size->product_id = $product->id;
+                $size->size_name = $singleSize;
+
+                $size->save();
+            }
+        }
+
+        //Gallery Images...
+        if(isset($request->gallery_image)){
+            foreach($request->gallery_image as $singleImage){
+                $galleryImage = new GalleryImage();
+                
+                $galleryImage->product_id = $product->id;
+
+                $imageName = rand().'.'.$singleImage->getClientOriginalExtension(); //4347657.jpg
+                $singleImage->move('admin/galleryImage', $imageName);
+
+                $galleryImage->image = url('admin/galleryImage/'.$imageName); //http://127.0.0.1:8000/admin/category/4347657.jpg
+
+                $galleryImage->save();
+            }
+        }
+
         toastr()->success('Product created successfully');
+        return redirect()->back();
+    }
+
+    public function list ()
+    {
+        $products = Product::orderBy('id', 'desc')->with('category', 'subcategory')->paginate(50);
+        return view('admin.product.list', compact('products'));
+    }
+
+    public function changeStatus ($id)
+    {
+        $product = Product::find($id);
+
+        if($product->status == 'active'){
+            $product->status = 'inactive';
+        }
+        else{
+            $product->status = 'active';
+        }
+
+        $product->save();
         return redirect()->back();
     }
 }
