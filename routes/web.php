@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [FrontendController::class, 'index']);
-Route::get('/product-details', [FrontendController::class, 'productDetails']);
+Route::get('/product-details/{id}', [FrontendController::class, 'productDetails']);
 Route::get('/shop', [FrontendController::class, 'shopProducts']); 
 Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy']);
 Route::get('/terms-conditions', [FrontendController::class, 'termsConditions']);

@@ -224,6 +224,8 @@ class ProductController extends Controller
                 }
             }
 
+            GalleryImage::where('product_id', $id)->delete();
+
             foreach($request->gallery_image as $singleImage){
                 $galleryImage = new GalleryImage();
                 
