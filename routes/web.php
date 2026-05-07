@@ -92,6 +92,9 @@ Route::middleware(['role:employee,admin'])->group(function(){
     //Settings Routes...
     Route::get('/manage/website-settings', [SettingController::class, 'manageSetting']);
     Route::post('/manage/website-settings/update', [SettingController::class, 'updateSetting']);
+
+    Route::get('/manage/website-policy', [SettingController::class, 'managePolicy']);
+    Route::post('/manage/website-policy/update', [SettingController::class, 'updatePolicy']);
 });
 
 Route::middleware(['role:employee,admin,customer'])->group(function(){
