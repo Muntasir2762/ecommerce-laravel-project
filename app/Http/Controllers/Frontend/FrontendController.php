@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\ContactMessage;
 use App\Models\Product;
+use App\Models\WebsitePolicy;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -33,32 +35,53 @@ class FrontendController extends Controller
 
     public function privacyPolicy ()
     {
-        return view('frontend.privacy-policy');
+        $privacyPolicy = WebsitePolicy::select('privacy_policy')->first();
+        return view('frontend.privacy-policy', compact('privacyPolicy'));
     }
 
     public function termsConditions ()
     {
-        return view('frontend.terms-conditions');
+        $termsConditions = WebsitePolicy::select('terms_conditions')->first();
+        return view('frontend.terms-conditions', compact('termsConditions'));
     }
 
     public function refundPolicy ()
     {
-        return view('frontend.refund-policy');
+        $refundPolicy = WebsitePolicy::select('refund_policy')->first();
+        return view('frontend.refund-policy', compact('refundPolicy'));
     }
 
     public function paymentPolicy ()
     {
-        return view('frontend.payment-policy');
+        $paymentPolicy = WebsitePolicy::select('payment_policy')->first();
+        return view('frontend.payment-policy', compact('paymentPolicy'));
     }
 
     public function aboutUs ()
     {
-        return view('frontend.aboutus');
+        $aboutUs = WebsitePolicy::select('about_us')->first();
+        return view('frontend.aboutus', compact('aboutUs'));
     }
 
     public function contactUs ()
     {
         return view('frontend.contactus');
+    }
+
+    public function contactMessageStore (Request $request)
+    {
+        $contactMessage = new ContactMessage();
+
+        $contactMessage->name = $request->name;
+        $contactMessage->phone = $request->phone;
+        $contactMessage->email = $request->email;
+        $contactMessage->subject = $request->subject;
+        $contactMessage->message = $request->message;
+
+        $contactMessage->save();
+        
+        toastr()->success('Message is sent successfully');
+        return redirect()->back();
     }
 
     public function viewCart ()

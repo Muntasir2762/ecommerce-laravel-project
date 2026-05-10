@@ -22,6 +22,7 @@ Route::get('/refund-policy', [FrontendController::class, 'refundPolicy']);
 Route::get('/payment-policy', [FrontendController::class, 'paymentPolicy']);
 Route::get('/aboutus', [FrontendController::class, 'aboutUs']);
 Route::get('/contactus', [FrontendController::class, 'contactUs']);
+Route::post('/contact-message/store', [FrontendController::class, 'contactMessageStore']);
 Route::get('/view-cart', [FrontendController::class, 'viewCart']);
 Route::get('/checkout', [FrontendController::class, 'checkout']);
 Route::get('/order-confirmation', [FrontendController::class, 'orderConfirmation']);
