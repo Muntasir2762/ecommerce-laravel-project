@@ -22,7 +22,10 @@ class Category extends Model
         return $this->hasMany(Product::class, 'cat_id', 'id');
     }
 
-    //Category  hasMany  SubCategory
-    //belongsTo
-    //hasMany
+    
 }
+
+//Category hasMany SubCategory
+
+//belongsTo
+//hasMany

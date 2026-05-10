@@ -37,7 +37,8 @@
                                                 <del>{{ $product->regular_price }} Tk.</del>
                                             </span>
                                         </div>
-                                        <form action="" method="POST">
+                                        <form action="{{url('/add-cart-details/'.$product->id)}}" method="POST">
+                                            @csrf
                                             <div class="product-details-select-items-wrap">
                                                 @foreach ($product->color as $singleColor)
                                                 <div class="product-details-select-item-outer">
@@ -174,3 +175,25 @@
         </section>
     </main>
 @endsection
+
+@push('script')
+    <script>
+        let qtyInput = document.getElementById('qty');
+
+        let plusBtn = document.querySelector('.increment-btn');
+        let minusBtn = document.querySelector('.decrement-btn');
+
+        plusBtn.addEventListener('click', function(){
+            if(parseInt(qtyInput.value) < 5){
+                qtyInput.value = parseInt(qtyInput.value) + 1;
+            }
+        });
+
+        minusBtn.addEventListener('click', function(){
+            if(parseInt(qtyInput.value) > 1){
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+            }
+        });
+
+    </script>
+@endpush
