@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Customer\CustomerController;
@@ -75,6 +77,10 @@ Route::middleware(['role:admin'])->group(function(){
     Route::post('/manage/product-update/{id}', [ProductController::class, 'update']);
     Route::get('/manage/product-delete/{id}', [ProductController::class, 'delete']);
     Route::get('/manage/product-status/{id}', [ProductController::class, 'changeStatus']);
+
+    //Contact Message Routes...
+    Route::get('/manage/contact-messages', [ContactMessageController::class, 'getContactMessages']);
+    Route::get('/delete/contact-message/{id}', [ContactMessageController::class, 'deleteContactMessage']);
 });
 
 
@@ -99,6 +105,13 @@ Route::middleware(['role:employee,admin'])->group(function(){
 
     Route::get('/manage/website-policy', [SettingController::class, 'managePolicy']);
     Route::post('/manage/website-policy/update', [SettingController::class, 'updatePolicy']);
+
+    Route::get('/manage/review-list', [ReviewController::class, 'reviewList']);
+    Route::get('/manage/review-create', [ReviewController::class, 'reviewCreate']);
+    Route::post('/manage/review-store', [ReviewController::class, 'reviewStore']);
+    Route::get('/manage/review-edit/{id}', [ReviewController::class, 'reviewEdit']);
+    Route::post('/manage/review-update/{id}', [ReviewController::class, 'reviewUpdate']);
+    Route::get('/manage/review-delete/{id}', [ReviewController::class, 'reviewDelete']);
 });
 
 Route::middleware(['role:employee,admin,customer'])->group(function(){
