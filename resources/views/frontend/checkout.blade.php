@@ -41,29 +41,36 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout-items-wrapper">
-                                <div class="checkout-item-outer">
+                                @php
+                                    $cartTotal = 0;
+                                @endphp
+                                @foreach ($globalCarts as $cart)
+                                    @php
+                                        $cartTotal = $cartTotal+$cart->price*$cart->qty;
+                                    @endphp
+                                    <div class="checkout-item-outer">
                                     <div class="checkout-item-left">
                                         <div class="checkout-item-image">
-                                            <img src="{{asset('frontend/assets/images/product.png')}}" alt="Image"/>
+                                            <img src="{{$cart->product->image}}" alt="Image"/>
                                         </div>
                                         <div class="checkout-item-info">
                                             <h6 class="checkout-item-name">
-                                                Test Product
+                                                {{$cart->product->name}}
                                             </h6>
                                             <p class="checkout-item-price">
-                                                300 Tk.
+                                                {{$cart->price}} Tk.
                                             </p>
                                             <span class="checkout-item-count">
-                                                1 item
+                                                {{$cart->qty}} item
                                             </span>
                                             <br />
                                             <span class="checkout-item-count">
-                                                Size:                                                 
+                                                Size: {{$cart->size}} |                                            
                                             </span>                                                
                                             <span class="checkout-item-count">
-                                                Color: 
+                                                Color: {{$cart->color}}
                                             </span>
-                                            <div class="checkout-product-incre-decre">
+                                            {{-- <div class="checkout-product-incre-decre">
                                                 <button type="button" title="Decrement" class="qty-decrement-btn">
                                                     <i class="fas fa-minus"></i>
                                                 </button>
@@ -71,19 +78,20 @@
                                                 <button type="button" title="Increment" class="qty-increment-btn">
                                                     <i class="fas fa-plus"></i>
                                                 </button>                                                
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="checkout-item-right">
-                                        <a href="#" class="delete-btn">
+                                        <a href="{{url('/delete-cart/'.$cart->id)}}" class="delete-btn">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>
                                 </div>
+                                @endforeach
                                 <div class="sub-total-wrap">
                                     <div class="sub-total-item">
                                          <strong>Sub Total</strong>
-                                        <strong id="subTotal">৳ 300</strong>
+                                        <strong id="subTotal">৳ {{$cartTotal}}</strong>
                                     </div>
                                     <div class="sub-total-item">
                                         <strong>Delivery charge</strong>
