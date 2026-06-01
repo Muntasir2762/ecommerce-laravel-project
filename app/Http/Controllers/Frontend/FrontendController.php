@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\ContactMessage;
+use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\WebsitePolicy;
 use Illuminate\Http\Request;
@@ -206,9 +208,58 @@ class FrontendController extends Controller
         return view('frontend.checkout');
     }
 
-    public function orderConfirmation ()
+    public function orderStore (Request $request)
     {
-        return view('frontend.thankyou');
+        $order = new Order();
+
+        $order->ip_address = $request->ip();
+        $order->user_id = auth()->check() ? auth()->user()->id : null;
+
+        $previousOrder = Order::orderBy('id', 'desc')->first();
+
+        if($previousOrder == null){
+            $generatedInvoice = 'XYZ-1';
+            $order->invoice_number = $generatedInvoice;
+        }
+        elseif($previousOrder != null){
+            $generatedInvoice = 'XYZ-'.$previousOrder->id+1;
+            $order->invoice_number = $generatedInvoice;
+        }
+        $order->name = $request->name;
+        $order->phone = $request->phone;
+        $order->address = $request->address;
+        $order->charge = $request->charge;
+        $order->price = $request->grandTotalPriceInput;
+
+        $cartProducts = Cart::where('ip_address', $request->ip())->get();
+
+        if($cartProducts->isNotEmpty()){
+            $order->save();
+
+            foreach($cartProducts as $cart){
+                $orderDetails = new OrderDetails();
+
+                $orderDetails->order_id = $order->id;
+                $orderDetails->product_id = $cart->product_id;
+                $orderDetails->color = $cart->color;
+                $orderDetails->qty = $cart->qty;
+                $orderDetails->price = $cart->price;
+
+                $orderDetails->save();
+                $cart->delete();
+            }
+
+            return redirect('/order-confirmation/'.$generatedInvoice);
+        }
+        else{
+            toastr()->error('Your cart is empty');
+            return redirect('/');
+        }
+    }
+
+    public function orderConfirmation ($invoice_id)
+    {
+        return view('frontend.thankyou', compact('invoice_id'));
     }
 
     public function categoryProducts ()

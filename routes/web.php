@@ -27,7 +27,6 @@ Route::get('/contactus', [FrontendController::class, 'contactUs']);
 Route::post('/contact-message/store', [FrontendController::class, 'contactMessageStore']);
 Route::get('/view-cart', [FrontendController::class, 'viewCart']);
 Route::get('/checkout', [FrontendController::class, 'checkout']);
-Route::get('/order-confirmation', [FrontendController::class, 'orderConfirmation']);
 Route::get('/category-products', [FrontendController::class, 'categoryProducts']);
 Route::get('/subcategory-products', [FrontendController::class, 'subCategoryProducts']);
 Route::get('/type-products', [FrontendController::class, 'typeProducts']);
@@ -36,6 +35,8 @@ Route::get('/type-products', [FrontendController::class, 'typeProducts']);
 Route::post('/add-cart-details/{id}', [FrontendController::class, 'addtocartDetailsPage']);
 Route::get('/add-cart/{id}', [FrontendController::class, 'addtocart']);
 Route::get('/delete-cart/{id}', [FrontendController::class, 'deleCart']);
+Route::post('/customer-order-store', [FrontendController::class, 'orderStore']);
+Route::get('/order-confirmation/{invoice_id}', [FrontendController::class, 'orderConfirmation']);
 
 //Login Routes...
 Route::get('/admin/login', [LoginController::class, 'adminLogin']);

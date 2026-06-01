@@ -9,7 +9,7 @@
                     <div class="background"></div>
                     <div class="checkmark draw"></div>
                 </div>
-                <h3 class="py-3">অর্ডার নম্বর : 102</h3>
+                <h3 class="py-3">অর্ডার নম্বর : {{$invoice_id}}</h3>
                 <p class="thank-you-message">
                     আপনার অর্ডারটি সফলভাবে সম্পন্ন হয়েছে ।আমাদের কল সেন্টার থেকে ফোন করে আপনার অর্ডারটি কনফার্ম করা হবে
                 </p>
