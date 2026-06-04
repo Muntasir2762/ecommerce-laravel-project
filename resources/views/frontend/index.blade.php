@@ -8,19 +8,23 @@
 				<div class="home__slider-sec-wrap">
 					<div class="home__category-outer">
 						<ul class="header__category-list">
+							@foreach ( $globalCategories as $category )
 							<li class="header__category-list-item item-has-submenu">
-								<a href="{{url('/category-products')}}" class="header__category-list-item-link">
-									<img src="{{asset('frontend/assets/images/product.png')}}" alt="category">
-									Test Category
+								<a href="{{url('/category-products/'.$category->slug)}}" class="header__category-list-item-link">
+									<img src="{{$category->image}}" alt="category">
+									{{$category->name}}
 								</a>
 								<ul class="header__nav-item-category-submenu">
+									@foreach ( $category->subCtaegory as $subCategory )
 									<li class="header__category-submenu-item">
-										<a href="{{url('/subcategory-products')}}" class="header__category-submenu-item-link">
-											Test Subcategory
+										<a href="{{url('/subcategory-products/'.$subCategory->slug)}}" class="header__category-submenu-item-link">
+											{{$subCategory->name}}
 										</a>
 									</li>
+									@endforeach
 								</ul>
 							</li>
+							@endforeach
 						</ul>
 					</div>
 					<div class="home__slider-items-wrapper">
@@ -43,7 +47,7 @@
 				</div>
 				<div class="categoris-items-wrapper owl-carousel">
 					@foreach ($homeCategories as $category)
-					<a href="{{url('/category-products')}}" class="categoris-item">
+					<a href="{{url('/category-products/'.$category->slug)}}" class="categoris-item">
 						<img src="{{$category->image}}" alt="category" />
 						<h6 class="categoris-name">
 							{{$category->name}}
@@ -88,7 +92,7 @@
 					<h1 class="title">
 						Hot Products
 					</h1>
-					<a href="{{url('/type-products')}}" class="product-view-all-btn">
+					<a href="{{url('/type-products/hot')}}" class="product-view-all-btn">
 						View All
 					</a>
 				</div>
@@ -136,7 +140,7 @@
 					<h1 class="title">
 						New Arrival
 					</h1>
-					<a href="{{url('/type-products')}}" class="product-view-all-btn">
+					<a href="{{url('/type-products/new')}}" class="product-view-all-btn">
 						View All
 					</a>
 				</div>
@@ -184,7 +188,7 @@
 					<h1 class="title">
 						Regular Products
 					</h1>
-					<a href="{{url('/type-products')}}" class="product-view-all-btn">
+					<a href="{{url('/type-products/regular')}}" class="product-view-all-btn">
 						View All
 					</a>
 				</div>
@@ -232,7 +236,7 @@
 					<h1 class="title">
 						Discount Products
 					</h1>
-					<a href="{{url('/type-products')}}" class="product-view-all-btn">
+					<a href="{{url('/type-products/discount')}}" class="product-view-all-btn">
 						View All
 					</a>
 				</div>

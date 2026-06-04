@@ -9,6 +9,7 @@ use App\Models\ContactMessage;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
+use App\Models\SubCategory;
 use App\Models\WebsitePolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -142,9 +143,19 @@ class FrontendController extends Controller
         return redirect()->back();
     }
 
-    public function shopProducts ()
+    public function shopProducts (Request $request)
     {
-        return view('frontend.shop');
+        if(isset($request->cat_id)){
+            $products = Product::orderBy('id', 'desc')->where('cat_id', $request->cat_id)->paginate(50);
+        }
+        elseif(isset($request->subcat_id)){
+            $products = Product::orderBy('id', 'desc')->where('subcat_id', $request->subcat_id)->paginate(50);
+        }
+        else{
+            $products = Product::orderBy('id', 'desc')->paginate(50);
+        }
+
+        return view('frontend.shop', compact('products'));
     }
 
     public function privacyPolicy ()
@@ -262,18 +273,29 @@ class FrontendController extends Controller
         return view('frontend.thankyou', compact('invoice_id'));
     }
 
-    public function categoryProducts ()
+    public function categoryProducts ($slug)
     {
-        return view('frontend.category-products');
+        $category = Category::where('slug', $slug)->select('id')->first();
+        $products = Product::where('cat_id', $category->id)->get();
+        return view('frontend.category-products', compact('products'));
     }
 
-    public function subCategoryProducts ()
+    public function subCategoryProducts ($slug)
     {
-        return view('frontend.subcategory-products');
+        $subCategory = SubCategory::where('slug', $slug)->select('id')->first();
+        $products = Product::where('subcat_id', $subCategory->id)->get();
+        return view('frontend.subcategory-products', compact('products'));
     }
 
-    public function typeProducts ()
+    public function typeProducts ($type)
     {
-        return view('frontend.type-products');
+        $products = Product::where('product_type', $type)->orderBy('id', 'desc')->get();
+        return view('frontend.type-products', compact('products', 'type'));
+    }
+
+    public function searchProducts (Request $request)
+    {
+        $products = Product::where('name', 'LIKE','%'.$request->search.'%')->get();
+        return view('frontend.search-products', compact('products'));
     }
 }
