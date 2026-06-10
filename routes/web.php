@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SettingController;
@@ -54,8 +55,6 @@ Route::post('/customer/registration-store', [LoginController::class, 'customerRe
 Auth::routes(['login' => false, 'register' => false]);
 
 Route::middleware(['role:admin'])->group(function(){
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-    Route::get('/admin/logout', [AdminController::class, 'adminLogout']);
 
     //Category Routes...
     Route::get('/manage/category-create', [CategoryController::class, 'create']);
@@ -106,6 +105,8 @@ Route::middleware(['role:customer'])->group(function(){
 });
 
 Route::middleware(['role:employee,admin'])->group(function(){
+    Route::get('/admin/logout', [AdminController::class, 'adminLogout']);
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
     //Settings Routes...
     Route::get('/manage/website-settings', [SettingController::class, 'manageSetting']);
     Route::post('/manage/website-settings/update', [SettingController::class, 'updateSetting']);
@@ -119,6 +120,9 @@ Route::middleware(['role:employee,admin'])->group(function(){
     Route::get('/manage/review-edit/{id}', [ReviewController::class, 'reviewEdit']);
     Route::post('/manage/review-update/{id}', [ReviewController::class, 'reviewUpdate']);
     Route::get('/manage/review-delete/{id}', [ReviewController::class, 'reviewDelete']);
+
+    //Order Routes...
+    Route::get('/manage/orders/{status}', [OrderController::class, 'showOrders']);
 });
 
 Route::middleware(['role:employee,admin,customer'])->group(function(){
