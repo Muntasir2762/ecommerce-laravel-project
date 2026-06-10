@@ -100,6 +100,9 @@ Route::middleware(['role:customer'])->group(function(){
     Route::post('/customer/profile-update', [CustomerController::class, 'customerProfileUpdate']);
     Route::get('/customer/view-credentials', [CustomerController::class, 'customerCredentialView']);
     Route::post('/customer/update-credentials', [CustomerController::class, 'customerCredentialUpdate']);
+
+    //Order Routes...
+    Route::get('/customer/orders/{status}', [CustomerController::class, 'customerOrders']);
 });
 
 Route::middleware(['role:employee,admin'])->group(function(){
