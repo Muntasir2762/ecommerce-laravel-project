@@ -193,7 +193,7 @@
                                     Category
                                 </h3>
                                 @foreach ($detailsPageCategory as $category)
-                                <a href="{{url('/category-products')}}" class="category-item-outer">
+                                <a href="{{url('/category-products/'.$category->slug)}}" class="category-item-outer">
                                     <img src="{{$category->image}}" alt="category image">
                                     {{$category->name}}
                                 </a>

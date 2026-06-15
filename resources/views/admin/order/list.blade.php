@@ -77,7 +77,7 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex gap-2">
-                                                    <a href="#" class="btn btn-primary">Edit</a>
+                                                    <a href="{{url('/manage/order-details/'.$order->id)}}" class="btn btn-primary">Edit</a>
                                                     <a href="#" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
                                                 </div>
                                             </td>
