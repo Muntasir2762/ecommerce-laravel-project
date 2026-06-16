@@ -13,7 +13,14 @@ class CustomerController extends Controller
 {
     public function dashboard ()
     {
-        return view('customer.customer-dashboard');
+        $allOrders = Order::where('user_id', Auth::user()->id)->count();
+        $pendingOrders = Order::where('user_id', Auth::user()->id)->where('status', 'pending')->count();
+        $confirmedOrders = Order::where('user_id', Auth::user()->id)->where('status', 'confirmed')->count();
+        $deliveredOrders = Order::where('user_id', Auth::user()->id)->where('status', 'delivered')->count();
+        $returnedOrders = Order::where('user_id', Auth::user()->id)->where('status', 'returned')->count();
+        $cancelledOrders = Order::where('user_id', Auth::user()->id)->where('status', 'cancelled')->count();
+        return view('customer.customer-dashboard', compact('allOrders', 'pendingOrders', 'confirmedOrders',
+        'deliveredOrders', 'returnedOrders', 'cancelledOrders'));
     }
 
     public function customerLogout ()
@@ -92,12 +99,23 @@ class CustomerController extends Controller
     public function customerOrders ($status)
     {
         if($status == 'all'){
-            $orders = Order::orderBy('id', 'desc')->where('user_id', Auth::user()->id)->get();
+            $orders = Order::with('orderDetails')->orderBy('id', 'desc')->where('user_id', Auth::user()->id)->get();
         }
         else{
-            $orders = Order::orderBy('id', 'desc')->where('status',$status)->where('user_id', Auth::user()->id)->get();
+            $orders = Order::with('orderDetails')->orderBy('id', 'desc')->where('status',$status)->where('user_id', Auth::user()->id)->get();
         }
-        //dd($orders);
+
         return view('customer.order.list', compact('orders'));
+    }
+
+    public function customerOrderCancel ($id)
+    {
+        $order = Order::find($id);
+
+        $order->status = 'cancelled';
+        $order->save();
+
+        toastr()->success('Order cancelled successfully');
+        return redirect()->back();
     }
 }

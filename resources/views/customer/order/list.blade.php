@@ -33,15 +33,12 @@
                             Address: {{$order->address}}
                           </td>
                           <td>
-                            <img src="https://placehold.co/100X100" height="100" width="100"> <br>
-                            1XProduct Name<br>
-                            Color: Red<br>
-                            Size: Small<br>
-
-                            <img src="https://placehold.co/100X100" height="100" width="100"> <br>
-                            1XProduct Name<br>
-                            Color: Red<br>
-                            Size: Small<br>
+                            @foreach ($order->orderDetails as $detail)
+                              <img src="{{$detail->product->image}}" height="100" width="100"> <br>
+                              {{$detail->qty}}X{{$detail->product->name}}<br>
+                              Color: {{$detail->color}}<br>
+                              Size: {{$detail->size}}<br>
+                            @endforeach
                           </td>
                           <td>{{$order->charge}}</td>
                           <td>{{$order->price}}</td>
@@ -50,7 +47,7 @@
                           </td>
                           <td>
                             @if ($order->status == 'pending' || $order->status == 'confirmed')
-                                <a href="#" class="btn btn-danger">Cancel</a>
+                                <a href="{{url('/customer/order-cancel/'.$order->id)}}" class="btn btn-danger">Cancel</a>
                             @else
                                 <a class="btn btn-danger">{{$order->status}}</a>
                             @endif
