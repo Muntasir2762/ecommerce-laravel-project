@@ -29,8 +29,9 @@ class FrontendController extends Controller
     public function productDetails ($slug)
     {
         $product = Product::with('color','size','galleryImage','review')->where('slug',$slug)->first();
+        $products = Product::where('id', '!=', $product->id)->where('cat_id', $product->cat_id)->orderBy('id', 'desc')->get();
         $detailsPageCategory = Category::get();
-        return view('frontend.product-details', compact('product','detailsPageCategory'));
+        return view('frontend.product-details', compact('product', 'products', 'detailsPageCategory'));
     }
 
     public function addtocartDetailsPage (Request $request, $id)
