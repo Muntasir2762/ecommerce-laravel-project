@@ -74,9 +74,9 @@ class OrderController extends Controller
             $apiEndpoint = "https://portal.packzy.com/api/v1/create_order";
 
             $header = [
-                'Api-Key' => "xip9dbmr0p63lh5dovu31avc2drn8mp1",
-                'Secret-Key' => "jqasahleewi7jx9cvxdz9vpd",
-                'Content-Type' => "application/json"
+                'Api-Key' => "",
+                'Secret-Key' => "",
+                'Content-Type' => ""
             ];
 
             //Body Parametres...
