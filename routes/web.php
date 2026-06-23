@@ -127,6 +127,10 @@ Route::middleware(['role:employee,admin'])->group(function(){
     Route::get('/manage/order-details/{id}', [OrderController::class, 'detailOrder']);
     Route::post('/manage/order-update/{id}', [OrderController::class, 'updateOrder']);
     Route::post('/manage/order-details/update/{id}', [OrderController::class, 'updateOrderDetails']);
+    Route::post('/manage/order-status-update/{id}', [OrderController::class, 'updateOrderStatus']);
+
+    //Courier Entry...
+    Route::get('/manage/order-courier-entry/{order_id}', [OrderController::class, 'courierEntry']);
 });
 
 Route::middleware(['role:employee,admin,customer'])->group(function(){

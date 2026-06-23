@@ -47,8 +47,8 @@
                                             <th>Delivery Charge</th>
                                             <th>Price</th>
                                             <th>Courier</th>
-                                            <th>Status</th>
-                                            <th style="width: 40px">Action</th>
+                                            <th style="width: 110px">Status</th>
+                                            <th style="width: 30px">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -71,9 +71,35 @@
                                             </td>
                                             <td>{{$order->charge}}</td>
                                             <td>{{$order->price}}</td>
-                                            <td>{{$order->courier_name ?? "N.A"}}</td>
                                             <td>
-                                                <span class="badge badge-info" style="color: rgb(91, 91, 163)">{{$order->status}}</span>
+                                                {{$order->courier_name ?? "N.A"}}
+                                                @if ($order->courier_name != null && $order->tracking_code == null)
+                                                    <a href="{{url('/manage/order-courier-entry/'.$order->id)}}" class="btn btn-success">Send</a>
+                                                @elseif ($order->tracking_code != null)
+                                                    <a href="{{$order->tracking_code}}" target="_blank" class="btn btn-success">Track</a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <form action="{{url('/manage/order-status-update/'.$order->id)}}" method="POST" id="statusUpdate">
+                                                    @csrf
+                                                    <select name="status" class="form-control" onchange="this.form.submit()">
+                                                        <option value="pending" @if ($order->status == 'pending')
+                                                            selected
+                                                        @endif>Pending</option>
+                                                        <option value="confirmed" @if ($order->status == 'confirmed')
+                                                            selected
+                                                        @endif>Confirmed</option>
+                                                        <option value="delivered" @if ($order->status == 'delivered')
+                                                            selected
+                                                        @endif>Delivered</option>
+                                                        <option value="cancelled" @if ($order->status == 'cancelled')
+                                                            selected
+                                                        @endif>Cancelled</option>
+                                                        <option value="returned" @if ($order->status == 'returned')
+                                                            selected
+                                                        @endif>Returned</option>
+                                                    </select>
+                                                </form>
                                             </td>
                                             <td>
                                                 <div class="d-flex gap-2">
