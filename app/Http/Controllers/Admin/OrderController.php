@@ -10,15 +10,25 @@ use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
-    public function showOrders ($status)
+    public function showOrders (Request $request, $status)
     {
-        if($status == 'all'){
-            $orders = Order::orderBy('id', 'desc')->with('orderDetails')->paginate(50);
+        if(isset($request->search)){
+             if($status == 'all'){
+                $orders = Order::where('invoice_number', $request->search)->orWhere('phone','LIKE','%'.$request->search.'%')->orderBy('id', 'desc')->with('orderDetails')->paginate(50);
+            }
+            else{
+                $orders = Order::where('invoice_number', $request->search)->orWhere('phone','LIKE','%'.$request->search.'%')->orderBy('id', 'desc')->with('orderDetails')->where('status', $status)->paginate(50);
+            }
         }
         else{
-            $orders = Order::orderBy('id', 'desc')->with('orderDetails')->where('status', $status)->paginate(50);
+            if($status == 'all'){
+                $orders = Order::orderBy('id', 'desc')->with('orderDetails')->paginate(50);
+            }
+            else{
+                $orders = Order::orderBy('id', 'desc')->with('orderDetails')->where('status', $status)->paginate(50);
+            }
         }
-        return view('admin.order.list', compact('orders'));
+        return view('admin.order.list', compact('orders', 'status'));
     }
 
     public function detailOrder ($id)
@@ -117,5 +127,16 @@ class OrderController extends Controller
         toastr()->success('Couirer entry is successful');
         return redirect()->back();
 
+    }
+
+    public function printBulkInvoice (Request $request)
+    {
+        $orders = Order::with('orderDetails')->whereIn('id', $request->order_id)->get();
+
+        foreach($orders as $order){
+            $order->is_printed = true;
+            $order->save();
+        }
+        return view('admin.order.invoice', compact('orders'));
     }
 }

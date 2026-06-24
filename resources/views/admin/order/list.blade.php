@@ -29,16 +29,38 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <form action="{{url('/manage/orders/'.$status)}}" method="GET">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <input type="text" name="search" class="form-control" placeholder="Search using phone or Invoice Number" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <a href="{{url('/manage/orders/'.$status)}}" class="btn btn-danger">Clear</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="col-md-12">
-                        <div class="card mb-4">
+                        <form action="{{url('/manage/order-print-bulk')}}" method="POST">
+                            @csrf
+                            <div class="card mb-4">
                             <div class="card-header">
                                 <h3 class="card-title">Order List</h3>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Print Selected</button>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAll">
+                                            </th>
                                             <th style="width: 10px">#</th>
                                             <th>Order Date</th>
                                             <th>Invoice</th>
@@ -54,6 +76,13 @@
                                     <tbody>
                                         @foreach ($orders as $order)
                                         <tr class="align-middle">
+                                            <td>
+                                                @if ($order->is_printed == 0)
+                                                    <input type="checkbox" name="order_id[]" value="{{$order->id}}" class="orderCheck">
+                                                    @else
+                                                    <span class="badge bg-danger">Printed</span>
+                                                @endif
+                                            </td>
                                             <td>{{$loop->index+1}}</td>
                                             <td>{{$order->created_at}}</td>
                                             <td>{{$order->invoice_number}}</td>
@@ -115,6 +144,7 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
+                        </form>
                     </div>
                 </div>
                 <!--end::Row-->
@@ -124,3 +154,12 @@
         <!--end::App Content-->
     </main>
 @endsection
+
+@push('script')
+    <script>
+        document.getElementById('selectAll').addEventListener('change', function(){
+            let checkBoxes = document.querySelectorAll('.orderCheck');
+            checkBoxes.forEach(checkBox => checkBox.checked = this.checked);
+        });
+    </script>
+@endpush

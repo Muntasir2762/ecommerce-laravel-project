@@ -128,6 +128,7 @@ Route::middleware(['role:employee,admin'])->group(function(){
     Route::post('/manage/order-update/{id}', [OrderController::class, 'updateOrder']);
     Route::post('/manage/order-details/update/{id}', [OrderController::class, 'updateOrderDetails']);
     Route::post('/manage/order-status-update/{id}', [OrderController::class, 'updateOrderStatus']);
+    Route::post('/manage/order-print-bulk', [OrderController::class, 'printBulkInvoice']);
 
     //Courier Entry...
     Route::get('/manage/order-courier-entry/{order_id}', [OrderController::class, 'courierEntry']);
