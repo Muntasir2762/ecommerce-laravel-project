@@ -31,6 +31,8 @@ Route::get('/get-subcategorywise-products/{id}', [ProductController::class, 'get
 
 //Order..
 Route::post('/add-to-cart', [OrderController::class, 'addToCart']);
+Route::get('/add-to-cart/delete/{id}', [OrderController::class, 'deleteAddToCart']);
+Route::get('/add-to-cart/list/{ip_address}', [OrderController::class, 'getCartList']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
