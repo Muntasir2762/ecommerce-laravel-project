@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -168,6 +171,120 @@ class OrderController extends Controller
                 'error' => true,
                 'message' => 'An Error Occured While Delete Add to Cart',
                 'carts' => [],
+                // 'errorMessage' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function confirmOrder (Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'ip_address' => 'required|ip',
+            'name' => 'required|string',
+            'phone' => 'required|string',
+            'address' => 'required|string|min:20',
+            'charge' => 'required|numeric',
+            'price' => 'required|numeric',
+            'products' => 'required|array',
+            'products.*.id' =>'required|integer|exists:products,id',
+            'products.*.qty' =>'required|integer',
+            'products.*.price' =>'required|numeric',
+            'products.*.color' =>'sometimes',
+            'products.*.size' =>'sometimes',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'error' => true,
+                'message' => 'Validation Error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try{
+            DB::beginTransaction();
+
+            $order = new Order();
+
+            $order->ip_address = $request->ip_address;
+            $previousOrder = Order::orderBy('id', 'desc')->first();
+
+            if($previousOrder == null){
+                $generatedInvoice = 'XYZ-1';
+                $order->invoice_number = $generatedInvoice;
+            }
+            elseif($previousOrder != null){
+                $generatedInvoice = 'XYZ-'.$previousOrder->id+1;
+                $order->invoice_number = $generatedInvoice;
+            }
+            $order->name = $request->name;
+            $order->phone = $request->phone;
+            $order->address = $request->address;
+            $order->charge = $request->charge;
+            $order->price = $request->price;
+
+            $order->save();
+
+            foreach($request->products as $productData){
+                $orderDetails = new OrderDetails();
+
+                $orderDetails->order_id = $order->id;
+                $orderDetails->product_id = $productData['id'];
+                $orderDetails->color = $productData['color'];
+                $orderDetails->size = $productData['size'];
+                $orderDetails->qty = $productData['qty'];
+                $orderDetails->price = $productData['price'];
+
+                $orderDetails->save();
+            }
+
+            Cart::where('ip_address', $request->ip_address)->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Order has been placed successfully',
+                'order' => $order,
+            ], 200);
+
+        } catch(\Exception $e){
+            DB::rollBack();
+
+            return response()->json([
+                'error' => true,
+                'message' => 'An Error Occured While Placing Order',
+                'order' => [],
+                // 'errorMessage' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function successDetails ($invoice)
+    {
+        try{
+            $order = Order::where('invoice_number', $invoice)->with('orderDetails')->first();
+
+            if(!$order){
+                return response()->json([
+                    'error' => true,
+                    'message' => 'No Data found',
+                    'order' => []
+                ], 404);
+            }
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Order data retrived successfully',
+                'order' => $order
+            ], 200);
+
+
+        } catch(\Exception $e){
+            return response()->json([
+                'error' => true,
+                'message' => 'An Error Occured While Retriving Data',
+                'order' => [],
                 // 'errorMessage' => $e->getMessage()
             ], 500);
         }

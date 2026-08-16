@@ -13,6 +13,7 @@ use App\Models\SubCategory;
 use App\Models\WebsitePolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FrontendController extends Controller
 {
@@ -222,51 +223,64 @@ class FrontendController extends Controller
 
     public function orderStore (Request $request)
     {
-        $order = new Order();
+        try{
 
-        $order->ip_address = $request->ip();
-        $order->user_id = auth()->check() ? auth()->user()->id : null;
+            DB::beginTransaction();
 
-        $previousOrder = Order::orderBy('id', 'desc')->first();
+            $order = new Order();
 
-        if($previousOrder == null){
-            $generatedInvoice = 'XYZ-1';
-            $order->invoice_number = $generatedInvoice;
-        }
-        elseif($previousOrder != null){
-            $generatedInvoice = 'XYZ-'.$previousOrder->id+1;
-            $order->invoice_number = $generatedInvoice;
-        }
-        $order->name = $request->name;
-        $order->phone = $request->phone;
-        $order->address = $request->address;
-        $order->charge = $request->charge;
-        $order->price = $request->grandTotalPriceInput;
+            $order->ip_address = $request->ip();
+            $order->user_id = auth()->check() ? auth()->user()->id : null;
 
-        $cartProducts = Cart::where('ip_address', $request->ip())->get();
+            $previousOrder = Order::orderBy('id', 'desc')->first();
 
-        if($cartProducts->isNotEmpty()){
-            $order->save();
+            if($previousOrder == null){
+                $generatedInvoice = 'XYZ-1';
+                $order->invoice_number = $generatedInvoice;
+            }
+            elseif($previousOrder != null){
+                $generatedInvoice = 'XYZ-'.$previousOrder->id+1;
+                $order->invoice_number = $generatedInvoice;
+            }
+            $order->name = $request->name;
+            $order->phone = $request->phone;
+            $order->address = $request->address;
+            $order->charge = $request->charge;
+            $order->price = $request->grandTotalPriceInput;
 
-            foreach($cartProducts as $cart){
-                $orderDetails = new OrderDetails();
+            $cartProducts = Cart::where('ip_address', $request->ip())->get();
 
-                $orderDetails->order_id = $order->id;
-                $orderDetails->product_id = $cart->product_id;
-                $orderDetails->color = $cart->color;
-                $orderDetails->qty = $cart->qty;
-                $orderDetails->price = $cart->price;
+            if($cartProducts->isNotEmpty()){
+                $order->save();
 
-                $orderDetails->save();
-                $cart->delete();
+                foreach($cartProducts as $cart){
+                    $orderDetails = new OrderDetails();
+
+                    $orderDetails->order_id = $order->id;
+                    $orderDetails->product_id = $cart->product_id;
+                    $orderDetails->color = $cart->color;
+                    $orderDetails->qty = $cart->qty;
+                    $orderDetails->price = $cart->price;
+
+                    $orderDetails->save();
+                    $cart->delete();
+                }
+                DB::commit();
+                return redirect('/order-confirmation/'.$generatedInvoice);
+
             }
 
-            return redirect('/order-confirmation/'.$generatedInvoice);
-        }
-        else{
-            toastr()->error('Your cart is empty');
+            else{
+                toastr()->error('Your cart is empty');
+                return redirect('/');
+            }
+
+        } catch(\Exception $e){
+            DB::rollBack();
+            toastr()->error('An Error Occured while placing order');
             return redirect('/');
         }
+
     }
 
     public function orderConfirmation ($invoice_id)
