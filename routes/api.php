@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GeneralDataController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
@@ -36,6 +37,10 @@ Route::get('/add-to-cart/list/{ip_address}', [OrderController::class, 'getCartLi
 Route::post('/confirm-order', [OrderController::class, 'confirmOrder']);
 Route::get('/success/order-details/{invoice}', [OrderController::class, 'successDetails']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Login-Registration...
+Route::post('/customer-registration', [AuthController::class, 'registration']);
+Route::post('/customer-login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/customer-logout', [AuthController::class, 'logout']);
 });
