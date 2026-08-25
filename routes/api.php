@@ -43,4 +43,8 @@ Route::post('/customer-login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/customer-logout', [AuthController::class, 'logout']);
+    Route::post('/add-to-cart-auth', [OrderController::class, 'addToCartAuth']);
+    Route::post('/confirm-order-auth', [OrderController::class, 'confirmOrderAuth']);
+    Route::get('/order-list', [OrderController::class, 'getOrders']);
+    Route::get('/order-count', [OrderController::class, 'getOrderCount']);
 });
